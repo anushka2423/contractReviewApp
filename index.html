@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Contract Review</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="logo" aria-hidden="true">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="m9 15 2 2 4-4"/></svg>
+      </span>
+      <h1>Contract Review</h1>
+    </div>
+    <span id="topbar-file" class="topbar-file" hidden></span>
+    <button id="upload-btn" class="btn btn-primary" type="button">Upload contract</button>
+    <input id="file-input" type="file" accept="application/pdf,.pdf" hidden>
+  </header>
+
+  <main class="layout">
+    <!-- Contract -->
+    <section class="panel" aria-labelledby="contract-title">
+      <div class="panel-header">
+        <h2 id="contract-title">Contract</h2>
+        <span id="file-meta" class="panel-meta" hidden></span>
+        <button id="clear-btn" class="btn btn-ghost" type="button" hidden>Remove</button>
+      </div>
+
+      <div class="panel-body contract-body">
+        <div id="dropzone" class="dropzone" tabindex="0" role="button" aria-label="Upload a PDF contract">
+          <span class="dz-icon" aria-hidden="true">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M12 17v-6M9.5 13.5 12 11l2.5 2.5"/></svg>
+          </span>
+          <p class="dz-title">Drop your contract here</p>
+          <p class="dz-sub">PDF files only &middot; or <span class="browse">browse files</span></p>
+        </div>
+
+        <p id="upload-error" class="error" role="alert" hidden></p>
+
+        <iframe id="pdf-frame" class="pdf-frame" title="Contract PDF preview" hidden></iframe>
+      </div>
+    </section>
+
+    <!-- Chat -->
+    <section class="panel" aria-labelledby="chat-title">
+      <div class="panel-header">
+        <h2 id="chat-title">Chat</h2>
+        <span class="status"><span class="dot" aria-hidden="true"></span>Ready</span>
+      </div>
+
+      <div id="messages" class="panel-body messages" aria-live="polite">
+        <div class="msg bot">Upload a contract, then ask me questions about it.</div>
+      </div>
+
+      <form id="chat-form" class="chat-form" autocomplete="off">
+        <label for="chat-input" class="sr-only">Ask a question about the contract</label>
+        <input id="chat-input" type="text" placeholder="Ask a question about the contract…">
+        <button id="send-btn" class="btn btn-primary" type="submit" disabled>Send</button>
+      </form>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
