@@ -18,6 +18,8 @@
       <h1>Contract Review</h1>
     </div>
     <span id="topbar-file" class="topbar-file" hidden></span>
+    <button id="history-btn" class="btn btn-outline" type="button" aria-haspopup="dialog">Chat history</button>
+    <button id="feedback-btn" class="btn btn-outline" type="button" aria-haspopup="dialog">Feedback</button>
     <button id="upload-btn" class="btn btn-primary" type="button">Upload contract</button>
     <input id="file-input" type="file" accept="application/pdf,.pdf" hidden>
   </header>
@@ -65,6 +67,108 @@
     </section>
   </main>
 
+  <!-- Feedback modal -->
+  <dialog id="feedback-dialog" class="modal" aria-labelledby="feedback-title">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h2 id="feedback-title">Send feedback</h2>
+        <button id="feedback-close" class="icon-btn" type="button" aria-label="Close feedback form">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+        </button>
+      </div>
+
+      <form id="feedback-form" class="fb-form" novalidate>
+        <div id="feedback-error" class="fb-banner" role="alert" hidden></div>
+
+        <fieldset id="feedback-fields" class="fb-fields">
+          <fieldset class="fb-group" aria-describedby="err-rating">
+            <legend class="fb-label">Rating <span class="fb-tag">Required</span></legend>
+            <div class="rating">
+              <input class="sr-only" type="radio" name="rating" id="rating-1" value="1"><label for="rating-1" aria-label="1 out of 5, poor">1</label>
+              <input class="sr-only" type="radio" name="rating" id="rating-2" value="2"><label for="rating-2" aria-label="2 out of 5">2</label>
+              <input class="sr-only" type="radio" name="rating" id="rating-3" value="3"><label for="rating-3" aria-label="3 out of 5">3</label>
+              <input class="sr-only" type="radio" name="rating" id="rating-4" value="4"><label for="rating-4" aria-label="4 out of 5">4</label>
+              <input class="sr-only" type="radio" name="rating" id="rating-5" value="5"><label for="rating-5" aria-label="5 out of 5, excellent">5</label>
+            </div>
+            <div class="rating-hints" aria-hidden="true"><span>Poor</span><span>Excellent</span></div>
+            <p id="err-rating" class="fb-error" hidden></p>
+          </fieldset>
+
+          <div class="fb-group">
+            <label class="fb-label" for="fb-comment">Your feedback <span class="fb-tag">Required</span></label>
+            <textarea id="fb-comment" class="fb-input" name="comment" rows="5" maxlength="1000"
+              placeholder="What worked well? What could be better?" aria-describedby="err-comment fb-count"></textarea>
+            <div class="fb-row">
+              <p id="err-comment" class="fb-error" hidden></p>
+              <span id="fb-count" class="fb-count">0 / 1000</span>
+            </div>
+          </div>
+
+          <div class="fb-group">
+            <label class="fb-label" for="fb-name">Name <span class="fb-tag">Optional</span></label>
+            <input id="fb-name" class="fb-input" type="text" name="name" autocomplete="name" maxlength="100" aria-describedby="err-name">
+            <p id="err-name" class="fb-error" hidden></p>
+          </div>
+
+          <div class="fb-group">
+            <label class="fb-label" for="fb-email">Email <span class="fb-tag">Optional</span></label>
+            <input id="fb-email" class="fb-input" type="email" name="email" autocomplete="email" inputmode="email" maxlength="200" aria-describedby="err-email">
+            <p id="err-email" class="fb-error" hidden></p>
+          </div>
+        </fieldset>
+
+        <div class="fb-actions">
+          <button id="feedback-cancel" class="btn btn-ghost" type="button">Cancel</button>
+          <button id="feedback-submit" class="btn btn-primary" type="submit">
+            <span class="spinner" aria-hidden="true" hidden></span>
+            <span id="feedback-submit-label">Submit feedback</span>
+          </button>
+        </div>
+      </form>
+
+      <div id="feedback-success" class="fb-success" role="status" tabindex="-1" hidden>
+        <span class="fb-success-icon" aria-hidden="true">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>
+        </span>
+        <h3>Thank you for your feedback</h3>
+        <p>Your feedback was submitted.</p>
+        <button id="feedback-done" class="btn btn-primary" type="button">Done</button>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- Chat history modal -->
+  <dialog id="history-dialog" class="modal modal-wide" aria-labelledby="history-title">
+    <div class="modal-card">
+      <div class="modal-header">
+        <button id="history-back" class="btn btn-ghost" type="button" hidden>&larr; All contracts</button>
+        <h2 id="history-title">Chat history</h2>
+        <button id="history-close" class="icon-btn" type="button" aria-label="Close chat history">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+        </button>
+      </div>
+
+      <div id="history-loading" class="hist-skeleton" aria-busy="true" aria-label="Loading chat history" hidden>
+        <span></span><span></span><span></span>
+      </div>
+      <div id="history-empty" class="hist-state" hidden>
+        <p class="hist-state-title">No chat history yet</p>
+        <p>Questions you ask about a contract will show up here.</p>
+      </div>
+      <div id="history-error" class="hist-state hist-state-error" role="alert" hidden>
+        <p class="hist-state-title">We couldn’t load your chat history</p>
+        <p>Please check your connection and try again.</p>
+        <button id="history-retry" class="btn btn-primary" type="button">Try again</button>
+      </div>
+      <ul id="history-list" class="hist-list" hidden></ul>
+      <div id="history-thread" class="messages hist-thread" hidden></div>
+    </div>
+  </dialog>
+
+  <script src="config.js"></script>
+  <script src="supabase.js"></script>
   <script src="app.js"></script>
+  <script src="feedback.js"></script>
+  <script src="history.js"></script>
 </body>
 </html>
